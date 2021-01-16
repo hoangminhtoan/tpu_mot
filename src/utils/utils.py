@@ -1,3 +1,4 @@
+import enum
 import cv2
 import re
 
@@ -7,7 +8,7 @@ def load_labels(path):
        lines = (p.match(line).groups() for line in f.readlines())
        return {int(num): text.strip() for num, text in lines}
 
-def append_objs_to_img(cv2_im, objs, labels, text_lines, trkdata, trackerFlag):
+def visualize_image(cv2_im, objs, labels, text_lines, trkdata):
     height, width, _ = cv2_im.shape
 
     for trk in trkdata:
@@ -29,9 +30,10 @@ def append_objs_to_img(cv2_im, objs, labels, text_lines, trkdata, trackerFlag):
         percent = int(100 * ob.score)
         label = '{}% {} ID:{}'.format(percent, labels.get(ob.id, ob.id), int(trackID))
 
+        for i, line in enumerate(text_lines):
+            cv2_im = cv2.putText(cv2_im, line, (10, 20 + 20 * i), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
 
         cv2_im = cv2.rectangle(cv2_im, (x0, y0), (x1, y1), (0, 255, 0), 2)
-        cv2_im = cv2.putText(cv2_im, label, (x0, y0+30),
-                             cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 0, 0), 2)
+        cv2_im = cv2.putText(cv2_im, label, (x0, y0+30), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 0, 0), 2)
                              
     return cv2_im

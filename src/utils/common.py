@@ -46,14 +46,3 @@ def output_tensor(interpreter, i, label):
     if scale == 0:
         return output_data - zero_point
     return scale * (output_data - zero_point)
-
-def avg_fps_counter(window_size):
-    window = collections.deque(maxlen=window_size)
-    prev = time.monotonic()
-    yield 0.0  # First fps value.
-
-    while True:
-        curr = time.monotonic()
-        window.append(curr - prev)
-        prev = curr
-        yield len(window) / sum(window)

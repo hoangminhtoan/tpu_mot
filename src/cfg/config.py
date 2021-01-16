@@ -14,7 +14,7 @@ config.WEIGHT_DIR = os.path.join(config.HOME_DIR, 'weights')
 config.INPUT_DIR = os.path.join(config.HOME_DIR, 'data')
 
 # get output results
-config.RESULT_DIR = os.path.join(config.HOME_DIR, 'results')
+config.RESULT_DIR = os.path.join(str(Path(config.HOME_DIR).parent.parent), 'results')
 
 
 
