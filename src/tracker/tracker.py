@@ -29,7 +29,7 @@ def linear_assignment(cost_matrix):
 
 def iou_batch(bb_test, bb_gt):
   """
-  From SORT: Computes IOU between two bboxes in the form [x1,y1,x2,y2]
+  Computes IOU between two bboxes in the form [x1,y1,x2,y2]
   """
   bb_gt = np.expand_dims(bb_gt, 0)
   bb_test = np.expand_dims(bb_test, 1)

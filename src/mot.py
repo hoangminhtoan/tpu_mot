@@ -34,6 +34,8 @@ class MOT():
         # Detect bounding boxes
         self.detector.set_input(cv2_im)
         objs = self.detector.get_detections()
+        end_time = time.monotonic()
+        #print("FPS for detection {}".format(round(1. / (end_time - start_time))))
         # run object detector
         bboxes = []
         for i in range(len(objs)):
@@ -47,10 +49,13 @@ class MOT():
         #print("Number of bounding boxes : {}".format(len(detections)))
 
         # run feature extractor
+        #start_time = time.monotonic()
+
         self.extractor.set_input(cv2_im)
         embeddings = self.extractor.get_features(bboxes)
         
         end_time = time.monotonic()
+        #print("FPS for extraction: {}".format(round(1. / (end_time - start_time))))
         # tracking
         detections = []
         for i in range(len(objs)):
@@ -60,7 +65,7 @@ class MOT():
             element.append(objs[i].bbox.xmax)
             element.append(objs[i].bbox.ymax)
             element.append(embeddings[i]) 
-            #element.append(objs[i].score)
+            element.append(objs[i].score)
             detections.append(element)
 
         detections = np.array(detections)
@@ -85,7 +90,7 @@ def main():
     parser.add_argument('--detector_model', help='path to detector tflite model',
                         default=os.path.join(config.WEIGHT_DIR, 'ssd_mobilenet_v2_coco_quant_postprocess_edgetpu.tflite'))
     parser.add_argument('--extractor_model', help='path to features extractor tflite model',
-                        default=os.path.join(config.WEIGHT_DIR, 'osnet_x0_25_msmt17_quant_tpu.tflite'))
+                        default=os.path.join(config.WEIGHT_DIR, 'osnet_x0_25_msmt17_batch_1_full_quant_edgetpu.tflite'))
     parser.add_argument('--labels', help='load categories object',
                         default=os.path.join(config.WEIGHT_DIR, 'coco_labels.txt'))
     parser.add_argument('--threshold', type=float, help='classifier score threshold',
@@ -111,13 +116,13 @@ def main():
         video_name = now + args.input_data.split('/')[-1][:-4]
     count = 0
     
-    size = (800, 600)
+    size = (1280, 720)
     out = cv2.VideoWriter(os.path.join(config.RESULT_DIR, '{}.avi'.format(video_name)), cv2.VideoWriter_fourcc(*'XVID'), 24.0, size)
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             break
-        if count == 1024:
+        if count == 256:
            break 
 
         cv2_im = cv2.resize(frame, size)

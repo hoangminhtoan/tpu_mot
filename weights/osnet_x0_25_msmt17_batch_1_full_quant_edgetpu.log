@@ -1,0 +1,18 @@
+Edge TPU Compiler version 15.0.340273435
+Input: /content/drive/MyDrive/ColabNotebooks/content/osnet_x0_25_msmt17_batch_1_full_quant.tflite
+Output: osnet_x0_25_msmt17_batch_1_full_quant_edgetpu.tflite
+
+Operator                       Count      Status
+
+RESHAPE                        1          Mapped to Edge TPU
+MEAN                           25         Mapped to Edge TPU
+PAD                            61         Mapped to Edge TPU
+LOGISTIC                       24         Mapped to Edge TPU
+ADD                            24         Mapped to Edge TPU
+QUANTIZE                       2          Mapped to Edge TPU
+DEPTHWISE_CONV_2D              60         Mapped to Edge TPU
+AVERAGE_POOL_2D                2          Mapped to Edge TPU
+MAX_POOL_2D                    1          Mapped to Edge TPU
+FULLY_CONNECTED                1          Mapped to Edge TPU
+CONV_2D                        127        Mapped to Edge TPU
+MUL                            24         Mapped to Edge TPU

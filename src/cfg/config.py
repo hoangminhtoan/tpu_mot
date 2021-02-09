@@ -5,7 +5,7 @@ from pathlib import Path
 config = types.SimpleNamespace()
 
 # get home directory
-config.HOME_DIR = str(Path(__file__).parent)
+config.HOME_DIR = str(Path(__file__).parent.parent.parent)
 
 # get pretrained models
 config.WEIGHT_DIR = os.path.join(config.HOME_DIR, 'weights')
